@@ -1,32 +1,161 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
+
 <head>
-    <title>Calculadora de Promedio</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Notas Ponderadas</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .contenedor {
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            width: 400px;
+            box-shadow: 0px 0px 15px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background-color: #3498db;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        #resultado {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .error {
+            color: red;
+        }
+
+        .exito {
+            color: green;
+        }
+    </style>
 </head>
+
 <body>
 
-    <h1>Calculadora de Promedio</h1>
+    <div class="contenedor">
 
-    <input type="number" id="n1" placeholder="Nota 1"><br><br>
-    <input type="number" id="n2" placeholder="Nota 2"><br><br>
-    <input type="number" id="n3" placeholder="Nota 3"><br><br>
+        <h1>Calculadora de Notas</h1>
 
-    <button onclick="calcular()">Calcular</button>
+        <label>Nota 1 (30%)</label>
+        <input type="number" id="n1" min="0" max="5" step="0.1" placeholder="Ej: 4.5">
 
-    <h2 id="resultado"></h2>
+        <label>Nota 2 (30%)</label>
+        <input type="number" id="n2" min="0" max="5" step="0.1" placeholder="Ej: 3.8">
+
+        <label>Nota 3 (40%)</label>
+        <input type="number" id="n3" min="0" max="5" step="0.1" placeholder="Ej: 5.0">
+
+        <button onclick="calcular()">Calcular Promedio</button>
+
+        <div id="resultado"></div>
+
+    </div>
 
     <script>
+
         function calcular() {
+
             let n1 = parseFloat(document.getElementById("n1").value);
             let n2 = parseFloat(document.getElementById("n2").value);
             let n3 = parseFloat(document.getElementById("n3").value);
 
-            let promedio = (n1 + n2 + n3) / 3;
+            let resultado = document.getElementById("resultado");
 
-            document.getElementById("resultado").innerHTML =
-            "Promedio: " + promedio.toFixed(2);
+            if (
+                isNaN(n1) || isNaN(n2) || isNaN(n3)
+            ) {
+                resultado.innerHTML =
+                    "❌ Debe ingresar las tres notas.";
+                resultado.className = "error";
+                return;
+            }
+
+            if (
+                n1 < 0 || n1 > 5 ||
+                n2 < 0 || n2 > 5 ||
+                n3 < 0 || n3 > 5
+            ) {
+                resultado.innerHTML =
+                    "❌ Error: Las notas deben estar entre 0.0 y 5.0";
+                resultado.className = "error";
+                return;
+            }
+
+            let promedio =
+                (n1 * 0.30) +
+                (n2 * 0.30) +
+                (n3 * 0.40);
+
+            let estado = "";
+
+            if (promedio >= 4.5) {
+                estado = "🌟 Excelente";
+            }
+            else if (promedio >= 4.0) {
+                estado = "👍 Bueno";
+            }
+            else if (promedio >= 3.0) {
+                estado = "✅ Aprobado";
+            }
+            else {
+                estado = "❌ Reprobado";
+            }
+
+            resultado.innerHTML =
+                "Promedio Final: " + promedio.toFixed(2) +
+                "<br><br>" +
+                estado;
+
+            resultado.className = "exito";
         }
+
     </script>
 
 </body>
+
 </html>
